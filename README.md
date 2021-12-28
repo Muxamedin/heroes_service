@@ -1,4 +1,4 @@
-## Marvel heroes in squads
+# Marvel heroes in squads
 Something similar to the REST API service
 
 To run service - you can run
@@ -17,18 +17,18 @@ Note: Tested with curl on Linux and MacOs ,
 on Windows commands POST  - may not work as describes
 (make sure you know how to adopt commands to run curl at cmd )
 
-# Get list of heroes:
+## Get list of heroes:
 
 curl -X GET  http://localhost:8080/heroes
 
 
-# Create some group:
+## Create some group:
 curl -d '{"fake_group":["doctor_octopus", "captain_america"]}' -H
 "Content-Type:
 application/json" -X POST  http://localhost:8080/squads
 
 
-# Create hero:
+## Create hero:
 ### where positions in a list [true, 200, 1] mean:
 index 0 - true|false -  good|bad
 index 1 - integer    -  power
@@ -39,13 +39,13 @@ application/json" -X
 POST
 http://localhost:8080/heroes
 
-# Update hero:
+## Update hero:
 ### all can be updated for hero,  except power
 curl -d '{"alive": "injured", "good": false}' -H "Content-Type: application/json" -X PATCH  http://localhost:8080/heroes/rocket
 
-# Get info about hero and about group:
+## Get info about hero and about group:
 
-## hero
+### hero
 curl -X GET  http://localhost:8080/heroes/cosmo_cat_dog
 ### description values from hero
 index 0 - true|false -  good|bad
@@ -53,21 +53,21 @@ index 1 - integer    -  power
 index 1 - 1|0.5|0    -  alive|injured|dead
 
 
-## group
+### group
 curl  -X GET  http://localhost:8080/squads/spider_man_team
 
 
-# Delete hero
+## Delete hero
 ### will be deleted from groups as well
 curl  -X DELETE  http://localhost:8080/heroes/nova
 
-# Delete squad
+## Delete squad
 curl  -X DELETE  http://localhost:8080/squads/fantastic_four
 
 
 curl -d '{"name":[false, 203, 1]}' -H "Content-Type: application/json" -X POST  http://localhost:8080/heroes
 
-# Tournament
+## Tournament
 ### I'm using post here to get tournament
 #### use such format for body
 {"squad1": "<name_of_team>",
