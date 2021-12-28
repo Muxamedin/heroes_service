@@ -80,40 +80,20 @@ class URLsBinding:
         return self._func(url, "patch")
 
 
-def _test_binding():
-    def my_fun1():
-        return "Ok"
-
-    def my_fun2():
-        return "No is a answer on stupid question"
-
-    bounded_urls = URLsBinding()
-    bounded_urls.bind_get("/hero", my_fun1)
-    bounded_urls.bind_post("/hero", my_fun2)
-    bounded_urls.bind_post("/squad", my_fun1)
-    bounded_urls.bind_delete("/hero", my_fun2)
-    bounded_urls.bind_patch("/hero", my_fun1)
-    bounded_urls.show_end_points()
-    func = bounded_urls.bound_post_and_func("/hero")
-    print("hero", bounded_urls.endpoint_exists("/hero"))
-    print("hero00", bounded_urls.endpoint_exists("/hero00"))
-    print(func())
-
-
 class EndPoints:
     """Class for handling end-points"""
 
     def __init__(self):
         self._end_points: dict = {}
 
-    def add_endpoint(self, end_point: str):
+    def add_endpoint(self, end_point: str, methods=["GET", "POST"]):
         """add name of endpoint
 
            By default, methods GET and POST are available to use with added
            endpoint
         """
 
-        self._end_points[end_point] = ['GET', 'POST']
+        self._end_points[end_point] = methods
 
     def valid_endpoint(self, end_point_to_validate: str) -> bool:
         """Endpoint exists or not"""
@@ -166,17 +146,5 @@ class EndPoints:
         return list(self._end_points.keys())
 
 
-def _test_endpoint():
-    points = EndPoints()
-    points.add_endpoint("/hero")
-    points.add_endpoint("/squad")
-    points.add_endpoint("/fight")
-    print(points.add_endpoint("/hero"))
-    print(points.endpoints)
-    print(points.change_available_methods('/hero', ['PATCH']))
-    print(points.endpoint_methods('/hero'))
-
-
 if __name__ == "__main__":
-    _test_endpoint()
-    _test_binding()
+    pass

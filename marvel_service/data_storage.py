@@ -174,7 +174,11 @@ class HeroesTableHandler:
             self.heroes.pop(name)
 
 
-class Group:
+class SuperHeroSquads:
+    """SuperHeroSquads - class of object which should process all data from squads
+       object  - contains squads as a dict
+    """
+
     def __init__(self, ready_structure: dict = None):
         if ready_structure is None:
             self.squads = {}
@@ -239,19 +243,4 @@ def calculate_power(heroes, group, group_name1, group_name2):
 
 if __name__ == '__main__':
     hero = HeroesTableHandler(heroes)
-    # squad = Group(squads)
-    # assert (hero.validate_hero('spider-man'))
-    # hero.make_injured('spider-man')
-    # print(hero.heroes['spider-man'])
-    # hero.make_dead('spider-man')
-    # print(hero.heroes['spider-man'])
-    # hero.make_alive('spider-man')
-    # print(hero.heroes['spider-man'])
-    # assert (squad.is_valid_squad('tmnt'))
-    # print(calculate_power(hero.heroes, squad.squads, 'tmnt', 'symbiots'))
-    # hero.make_injured('raphael')
-    # print(calculate_power(hero.heroes, squad.squads, 'tmnt'))
-    # hero.make_dead('raphael')
-    # print(calculate_power(hero.heroes, squad.squads, 'tmnt'))
-    # print(calculate_power(hero.heroes, squad.squads, 'symbiots',
-    #                       'fantastic four'))
+

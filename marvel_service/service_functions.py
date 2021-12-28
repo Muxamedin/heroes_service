@@ -16,12 +16,12 @@ import re
 import json
 from .route import create_route
 from .data_storage import HeroesTableHandler, heroes
-from .data_storage import squads, Group, calculate_power
+from .data_storage import squads, SuperHeroSquads, calculate_power
 
 
 # tables with heroes and squads
 heroes_table = HeroesTableHandler(heroes)
-squad_table = Group(squads)
+squad_table = SuperHeroSquads(squads)
 
 """backend functions"""
 
