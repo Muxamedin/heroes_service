@@ -80,7 +80,7 @@ def heroes_patch(entity, body):
         else:
             heroes_table.make_injured(entity)
 
-    if 'good' in body.keys() :
+    if 'good' in body.keys():
         if body['good'] is True:
             heroes_table.set_good(entity)
         else:

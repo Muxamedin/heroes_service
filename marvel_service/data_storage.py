@@ -175,7 +175,8 @@ class HeroesTableHandler:
 
 
 class SuperHeroSquads:
-    """SuperHeroSquads - class of object which should process all data from squads
+    """SuperHeroSquads - class of object which should process all data from
+       squads
        object  - contains squads as a dict
     """
 
@@ -243,4 +244,3 @@ def calculate_power(heroes, group, group_name1, group_name2):
 
 if __name__ == '__main__':
     hero = HeroesTableHandler(heroes)
-

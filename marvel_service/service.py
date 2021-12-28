@@ -36,7 +36,6 @@ class MethodHandler(BaseHTTPRequestHandler):
         """Method GET"""
 
         parsed_path = parse.urlparse(self.path)
-        # print(parsed_path)
         # /endpoint/entity/?:params
         # /hero/loky
         # TODO issue with sending header
