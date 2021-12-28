@@ -13,9 +13,9 @@ To run service - you can execute `main.py`
 
 
 See, which commands you may use to play with service:
-Note: Tested with curl on Linux and MacOs ,
-on Windows commands POST  - may not work as describes
-(make sure you know how to adopt commands to run curl at cmd )
+- Note: Tested with curl on Linux and MacOs (on Windows commands POS may not
+  work as described)
+(make sure you know how to adopt commands to run curl from cmd )
 
 ## Get list of heroes:
 
@@ -30,9 +30,9 @@ application/json" -X POST  http://localhost:8080/squads`
 
 ## Create hero:
 ###  positions in a list [true, 200, 1] means:
-index 0 - true|false -  good|bad
-index 1 - integer    -  power
-index 1 - 1|0.5|0    -  alive|injured|dead
+- index 0 - true/false -  good/bad
+- index 1 - integer    -  power
+- index 1 - 1/0.5/0    -  alive/injured/dead
 
 `curl -d '{"cosmo_cat_dog":[true, 200, 1]}' -H "Content-Type:
 application/json" -X POST http://localhost:8080/heroes`
@@ -46,9 +46,9 @@ application/json" -X POST http://localhost:8080/heroes`
 ### hero
 `curl -X GET  http://localhost:8080/heroes/cosmo_cat_dog`
 ### description values from hero
-index 0 - true|false -  good|bad
-index 1 - integer    -  power
-index 1 - 1|0.5|0    -  alive|injured|dead
+- index 0 - true/false -  good/bad
+- index 1 - integer    -  power
+- index 1 - 1/0.5/0    -  alive/injured/dead
 
 
 ### group
