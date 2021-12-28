@@ -44,11 +44,15 @@ application/json" -X POST http://localhost:8080/heroes`
 ## Get info about hero and about group:
 
 ### hero
+## Get hero info
 `curl -X GET  http://localhost:8080/heroes/cosmo_cat_dog`
 ### description values from hero
 - index 0 - true/false -  good/bad
 - index 1 - integer    -  power
 - index 1 - 1/0.5/0    -  alive/injured/dead
+## Create hero
+`curl -d '{"name":[false, 203, 1]}' -H "Content-Type: application/json" -X POST  http://localhost:8080/heroes`
+
 
 
 ### group
@@ -62,8 +66,6 @@ application/json" -X POST http://localhost:8080/heroes`
 ## Delete squad
 `curl  -X DELETE  http://localhost:8080/squads/fantastic_four`
 
-
-`curl -d '{"name":[false, 203, 1]}' -H "Content-Type: application/json" -X POST  http://localhost:8080/heroes`
 
 ## Tournament
 ### I'm using post here to get tournament
