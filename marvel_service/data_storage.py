@@ -112,7 +112,7 @@ class HeroesTableHandler:
         return True
 
     def add_entity(self, name, params: list) -> bool:
-        print(params)
+
         if not self.validate_hero_params(params):
             return False
 
@@ -199,24 +199,25 @@ class Group:
 
 
 def calculate_power(hero, group, group_name1, group_name2):
-    def total_power_group(table_hero, group, group_name):
-        power = 0
-        for name in group[group_name]:
-            print(name)
-            power += table_hero[name][IPOWER] * hero[name][IALIVE]
-
-        return power
+    # def total_power_group(table_hero, group, group_name):
+    #     power = 0
+    #     print(group,group_name)
+    #     print(group.get_squad_info(group_name))
+    #     for name_ in group.get_squad_info(group_name):
+    #         print(name_)
+    #         print(table_hero[name_][IPOWER],table_hero[name_][IALIVE])
+    #         power += table_hero[name_][IPOWER] * table_hero[name_][IALIVE]
+    #
+    #     return power
 
     power_1: int = 0
     power_2: int = 0
 
-    # for name in group[group_name1]:
-    #     power_1 += hero[name][IPOWER] * hero[name][IALIVE]
-    power_1 = total_power_group(hero, group, group_name1)
-    power_2 = total_power_group(hero, group, group_name2)
+    for name in group[group_name1]:
+        power_1 += hero[name][IPOWER] * hero[name][IALIVE]
 
-    # for name in group[group_name2]:
-    #     power_2 += hero[name][IPOWER] * hero[name][IALIVE]
+    for name in group[group_name2]:
+        power_2 += hero[name][IPOWER] * hero[name][IALIVE]
 
     if power_1 > power_2:
         return group_name1

@@ -14,11 +14,12 @@
 
 import re
 import json
-from route import create_route, URLsBinding
-import data_storage as ds
+from .route import create_route
+from .data_storage import HeroesTableHandler, heroes
+from .data_storage import squads, Group, calculate_power
 
-heroes_table = ds.HeroesTableHandler(ds.heroes)
-squad_table = ds.Group(ds.squads)
+heroes_table = HeroesTableHandler(heroes)
+squad_table = Group(squads)
 
 
 def heroes_get(*args, **kwargs):
@@ -118,19 +119,38 @@ def squad_post(body: dict):
         return True
 
 
-def tournament():
-    pass
+def tournament(body: dict):
+    answer = prepare_answer("Bad format, expected {'squad1': 'group', "
+                            "'squad2': 'group''}", 422, False)
+    if 'squad1' in body:
+        group_name1 = body['squad1']
+    else:
+        return answer
+
+    if 'squad2' in body:
+        group_name2 = body['squad2']
+    else:
+        return answer
+
+    if not squad_table.is_valid_squad(group_name1):
+        return prepare_answer(f"Not Found {group_name1}"  , 404, False)
+
+    if not squad_table.is_valid_squad(group_name2):
+        return prepare_answer(f"Not Found {group_name2}"  , 404, False)
+
+    result = calculate_power(heroes_table.heroes, squad_table.squads, group_name1,
+                             group_name2)
+    return prepare_answer(f"{result}"  , 200, True)
 
 
 urlmapping = {
-    'get': (('/heroes', heroes_get), ('/squads', squads_get), ('/tournament',
-                                                               tournament),
+    'get': (('/heroes', heroes_get), ('/squads', squads_get),
             ('/heroes/{entity}', hero_get),
             ('/squads/{entity}', squad_get)),
     'delete': (('/heroes/{entity}', heroes_delete),
                ('/squads/{entity}', squad_delete)),
     'patch': (('/heroes/{entity}', heroes_patch),),
-    'post': (('/heroes', heroes_post), ('/squads', squad_post))
+    'post': (('/heroes', heroes_post), ('/tournament', tournament), ('/squads', squad_post))
 }
 
 
@@ -157,16 +177,11 @@ class MethodsCallDispatcher:
 
     def on_get(self, url_path):
 
-        answer = {'status': True,
-                  'error_code': 200,
-                  'message': ""
-                  }
-        entity: str = ""
-        end_point: str = ""
-
         pattern_with_entity = re.compile("^(/.+)/(.+)")
         pattern_endpoint = re.compile("^(/.+)$")
+        pattern_with3section = re.compile("^(/.+)/(.+)/(.+)")
         # NOTE - it is on GET
+
         if pattern_with_entity.search(url_path.path) is not None:
             path_entity = pattern_with_entity.findall(url_path.path)[0]
             end_point, entity = path_entity
@@ -202,7 +217,6 @@ class MethodsCallDispatcher:
                 answer = prepare_answer(json_result, 200, True)
             else:
                 answer = prepare_answer(f"Not Found: {end_point}", 404, False)
-
         else:
             answer = prepare_answer(f"Bad Request: {url_path.path}", 400, False)
 
@@ -223,7 +237,7 @@ class MethodsCallDispatcher:
             return prepare_answer("Check POST body", 422, False)
 
         body_dict = json.loads(body)
-        answer = prepare_answer("", 201, False)
+        answer = prepare_answer("", 201, True)
         pattern_end_point = re.compile("^(/.+)")
 
         if pattern_end_point.search(url_path.path) is not None:
@@ -231,10 +245,15 @@ class MethodsCallDispatcher:
                 # extract function which bounded to current end_point
                 function = \
                     self.route.bound_post_and_func(url_path.path)
-                print(function)
+
                 try:
-                    result_of_adding = function(body_dict)
-                    answer = prepare_answer("Created", 201, True)
+                    result_of_post = function(body_dict)
+
+                    if type(result_of_post) is dict:
+                        answer = result_of_post
+                    else:
+                        answer = prepare_answer("Created", 201, True)
+
                 except AttributeError:
                     answer = prepare_answer("Check POST body", 422, False)
 

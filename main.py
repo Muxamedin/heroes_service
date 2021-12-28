@@ -1,3 +1,4 @@
-import marvel_heroes.heroes as heroes
+#from  marvel_service.service import run_service as run
 
-heroes.read_personages()
+from marvel_service import service
+service.run_service()

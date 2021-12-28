@@ -1,8 +1,10 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
-import json
-import service_functions
-import route
+
+from marvel_service import service_functions
+
+# import route
+# import json
 
 
 class MethodHandler(BaseHTTPRequestHandler):
@@ -73,9 +75,6 @@ class MethodHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(answer['message'].encode('utf-8'))
 
-    # def do_UPDATE(self):
-    #     """Method UPDATE"""
-    #     print("00000")
 
     def do_PATCH(self):
         """Method UPDATE"""
@@ -118,18 +117,20 @@ class MethodHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(answer['message'].encode('utf-8'))
 
-# import json
-# def jprint(obj):
-# ...     # create a formatted string of the Python JSON object
-# ...     text = json.dumps(obj, sort_keys=True, indent=4)
-# ...     print(text)
+
+def run_service(port: int = 8080):
+    from http.server import HTTPServer
+    server = HTTPServer(('localhost', port), MethodHandler)
+    print('🚀: Starting server...')
+    print('😅: Server started.')
+    print('👀: use <Ctrl-C> to stop')
+
+    print(f"\n\nUse: http://localhost:{port}/heroes to start work with server")
+    print(f"\nYou can start from command:\n  curl -X GET  "
+          f"http://localhost:{port}/heroes")
+    server.serve_forever()
 
 
 if __name__ == '__main__':
-    from http.server import HTTPServer
-
-    server = HTTPServer(('localhost', 8080), MethodHandler)
-
-    print('Starting server, use <Ctrl-C> to stop')
-    server.serve_forever()
+    run_service()
 
