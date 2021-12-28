@@ -72,7 +72,7 @@ def heroes_patch(entity, body):
     if not heroes_table.validate_hero(entity):
         return
 
-    if body['alive']:
+    if 'alive' in body.keys():
         if body['alive'] == 'dead':
             heroes_table.make_dead(entity)
         elif body['alive'] == "alive":
@@ -80,7 +80,7 @@ def heroes_patch(entity, body):
         else:
             heroes_table.make_injured(entity)
 
-    if body['good']:
+    if 'good' in body.keys() :
         if body['good'] is True:
             heroes_table.set_good(entity)
         else:

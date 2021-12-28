@@ -61,16 +61,37 @@ heroes = {'spider_man':       [True, 2300, 1],
           'gamora':           [True, 1900, 1]
           }
 
-squads = {'spider_man_team': ['spider_man', 'iron_fist', 'nova', 'white_tiger'],
-          'fantastic_four': ['mister_fantastic', 'human_torch', 'the_thing',
+squads = {'spider_man_team': ['spider_man',
+                              'iron_fist',
+                              'nova',
+                              'white_tiger'],
+          'fantastic_four': ['mister_fantastic',
+                             'human_torch',
+                             'the_thing',
                              'invisible_girl'],
-          'future_foundation': ['spider_man', 'human_torch', 'the_thing',
+          'future_foundation': ['spider_man',
+                                'human_torch',
+                                'the_thing',
                                 'invisible_girl'],
-          'hydra': ['fisk', 'chameleon', 'red_skull', 'doctor_octopus'],
-          'avengers': ['captain_america', 'iron_man', 'hulk', 'thor'],
-          'tmnt': ['leonardo', 'donatello', 'raphael', 'michelangelo'],
-          'foot clan': ['shredder', 'krang', 'baxter_stockman', 'karai'],
-          'guardians_ofthe_galaxy': ['groot', 'rocket', 'star_lord', 'gamora'],
+          'hydra': ['fisk',
+                    'chameleon',
+                    'red_skull',
+                    'doctor_octopus'],
+          'avengers': ['captain_america',
+                       'iron_man',
+                       'hulk', 'thor'],
+          'tmnt': ['leonardo',
+                   'donatello',
+                   'raphael',
+                   'michelangelo'],
+          'foot clan': ['shredder',
+                        'krang',
+                        'baxter_stockman',
+                        'karai'],
+          'guardians_ofthe_galaxy': ['groot',
+                                     'rocket',
+                                     'star_lord',
+                                     'gamora'],
           'symbiots': ['venom', 'carnage', 'scream', 'toxin']
           }
 
@@ -198,16 +219,6 @@ class Group:
 
 
 def calculate_power(heroes, group, group_name1, group_name2):
-    # def total_power_group(table_hero, group, group_name):
-    #     power = 0
-    #     print(group,group_name)
-    #     print(group.get_squad_info(group_name))
-    #     for name_ in group.get_squad_info(group_name):
-    #         print(name_)
-    #         print(table_hero[name_][IPOWER],table_hero[name_][IALIVE])
-    #         power += table_hero[name_][IPOWER] * table_hero[name_][IALIVE]
-    #
-    #     return power
 
     power_1: int = 0
     power_2: int = 0

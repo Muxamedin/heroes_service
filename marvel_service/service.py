@@ -79,7 +79,6 @@ class MethodHandler(BaseHTTPRequestHandler):
         # /endpoint/entity
         # /hero/loky
         patch_body = self.rfile.read(int(self.headers['Content-Length']))
-        print(patch_body)
         answer = self.controller.on_patch(parsed_path, patch_body)
 
         # Make Answer
