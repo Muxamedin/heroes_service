@@ -1,3 +1,18 @@
+## Marvel heroes in squads
+Something similar to the REST API service
+
+To run service - you can run
+
+python3 main.py
+
+
+Allows to store information about heroes and about groups
+Allows compare power of squads of heroes
+Allows create, delete , modify - hero
+Allows create, delete , modify - squad
+
+
+See, which commands you may use to play with service:
 
 # Get list of heroes:
 
