@@ -8,7 +8,7 @@ from marvel_service import service_functions
 
 
 class MethodHandler(BaseHTTPRequestHandler):
-    """MethodHandler - class which describes handling REAST API methods
+    """MethodHandler - class which describes handling REST API methods
 
        do_GET - reaction on method GET, reads information about entity
        do_POST - create new entity at the point
@@ -36,13 +36,10 @@ class MethodHandler(BaseHTTPRequestHandler):
         """Method GET"""
 
         parsed_path = parse.urlparse(self.path)
-        #print(parsed_path)
+        # print(parsed_path)
         # /endpoint/entity/?:params
         # /hero/loky
         # TODO issue with sending header
-
-        #self.controller.route.show_end_points()
-
         answer = self.controller.on_get(parsed_path)
 
         # Make Answer
@@ -74,7 +71,6 @@ class MethodHandler(BaseHTTPRequestHandler):
 
         self.end_headers()
         self.wfile.write(answer['message'].encode('utf-8'))
-
 
     def do_PATCH(self):
         """Method UPDATE"""
@@ -133,4 +129,3 @@ def run_service(port: int = 8080):
 
 if __name__ == '__main__':
     run_service()
-

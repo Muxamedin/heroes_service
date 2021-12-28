@@ -69,7 +69,7 @@ squads = {'spider_man_team': ['spider_man', 'iron_fist', 'nova', 'white_tiger'],
           'hydra': ['fisk', 'chameleon', 'red_skull', 'doctor_octopus'],
           'avengers': ['captain_america', 'iron_man', 'hulk', 'thor'],
           'tmnt': ['leonardo', 'donatello', 'raphael', 'michelangelo'],
-          'foot clan': ['shredder', 'krang', 'baxter stockman', 'karai'],
+          'foot clan': ['shredder', 'krang', 'baxter_stockman', 'karai'],
           'guardians_ofthe_galaxy': ['groot', 'rocket', 'star_lord', 'gamora'],
           'symbiots': ['venom', 'carnage', 'scream', 'toxin']
           }
@@ -103,8 +103,8 @@ class HeroesTableHandler:
         if type(params[IPOWER]) != int:
             return False
 
-        if not (params[IALIVE] == DEAD \
-                or params[IALIVE] == ALIVE\
+        if not (params[IALIVE] == DEAD
+                or params[IALIVE] == ALIVE
                 or params[IALIVE] == INJURED):
 
             return False
@@ -177,7 +177,6 @@ class Group:
 
         return created
 
-
     def get_all_squads(self):
         return list(self.squads.keys())
 
@@ -198,7 +197,7 @@ class Group:
                 self.squads[group].remove(name)
 
 
-def calculate_power(hero, group, group_name1, group_name2):
+def calculate_power(heroes, group, group_name1, group_name2):
     # def total_power_group(table_hero, group, group_name):
     #     power = 0
     #     print(group,group_name)
@@ -214,10 +213,10 @@ def calculate_power(hero, group, group_name1, group_name2):
     power_2: int = 0
 
     for name in group[group_name1]:
-        power_1 += hero[name][IPOWER] * hero[name][IALIVE]
+        power_1 += heroes[name][IPOWER] * heroes[name][IALIVE]
 
     for name in group[group_name2]:
-        power_2 += hero[name][IPOWER] * hero[name][IALIVE]
+        power_2 += heroes[name][IPOWER] * heroes[name][IALIVE]
 
     if power_1 > power_2:
         return group_name1
@@ -229,19 +228,19 @@ def calculate_power(hero, group, group_name1, group_name2):
 
 if __name__ == '__main__':
     hero = HeroesTableHandler(heroes)
-    squad = Group(squads)
-    assert (hero.validate_hero('spider-man'))
-    hero.make_injured('spider-man')
-    print(hero.heroes['spider-man'])
-    hero.make_dead('spider-man')
-    print(hero.heroes['spider-man'])
-    hero.make_alive('spider-man')
-    print(hero.heroes['spider-man'])
-    assert (squad.is_valid_squad('tmnt'))
-    print(calculate_power(hero.heroes, squad.squads, 'tmnt', 'symbiots'))
-    hero.make_injured('raphael')
-    print(calculate_power(hero.heroes, squad.squads, 'tmnt'))
-    hero.make_dead('raphael')
-    print(calculate_power(hero.heroes, squad.squads, 'tmnt'))
-    print(calculate_power(hero.heroes, squad.squads, 'symbiots',
-                          'fantastic four'))
+    # squad = Group(squads)
+    # assert (hero.validate_hero('spider-man'))
+    # hero.make_injured('spider-man')
+    # print(hero.heroes['spider-man'])
+    # hero.make_dead('spider-man')
+    # print(hero.heroes['spider-man'])
+    # hero.make_alive('spider-man')
+    # print(hero.heroes['spider-man'])
+    # assert (squad.is_valid_squad('tmnt'))
+    # print(calculate_power(hero.heroes, squad.squads, 'tmnt', 'symbiots'))
+    # hero.make_injured('raphael')
+    # print(calculate_power(hero.heroes, squad.squads, 'tmnt'))
+    # hero.make_dead('raphael')
+    # print(calculate_power(hero.heroes, squad.squads, 'tmnt'))
+    # print(calculate_power(hero.heroes, squad.squads, 'symbiots',
+    #                       'fantastic four'))

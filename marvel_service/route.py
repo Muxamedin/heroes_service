@@ -96,7 +96,7 @@ def _test_binding():
     bounded_urls.show_end_points()
     func = bounded_urls.bound_post_and_func("/hero")
     print("hero", bounded_urls.endpoint_exists("/hero"))
-    print("hero00",bounded_urls.endpoint_exists("/hero00"))
+    print("hero00", bounded_urls.endpoint_exists("/hero00"))
     print(func())
 
 
@@ -126,7 +126,7 @@ class EndPoints:
         return is_valid
 
     def change_available_methods(self, end_point: str,
-                                 methods: [str] = ['GET', 'POST']
+                                 methods: [str] = ('GET', 'POST')
                                  ) -> bool:
         """change_available_methods - method gives ability to set up available
            REST methods

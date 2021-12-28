@@ -18,11 +18,15 @@ from .route import create_route
 from .data_storage import HeroesTableHandler, heroes
 from .data_storage import squads, Group, calculate_power
 
+
+# tables with heroes and squads
 heroes_table = HeroesTableHandler(heroes)
 squad_table = Group(squads)
 
+"""backend functions"""
 
-def heroes_get(*args, **kwargs):
+
+def heroes_get():
     heroes_dict = {"heroes": []}
     try:
         heroes_dict["heroes"] = heroes_table.get_all_heroes()
@@ -49,12 +53,15 @@ def heroes_delete(entity):
     heroes_table.delete_hero(entity)
     squad_table.delete_hero_from_squads(entity)
 
+
 def heroes_post(body: dict):
+    name_ = ""
+    lst_body = ""
     for k, v in body.items():
-        name = k
+        name_ = k
         lst_body = v
 
-    if not heroes_table.add_entity(name, lst_body):
+    if not heroes_table.add_entity(name_, lst_body):
         raise AttributeError
     else:
         return True
@@ -81,7 +88,7 @@ def heroes_patch(entity, body):
 
 
 def squad_get(name):
-    "Info squad"
+    """Info squad"""
     squad_info = {}
 
     try:
@@ -95,7 +102,7 @@ def squad_get(name):
         return json.dumps(squad_info)
 
 
-def squads_get(*args, **kwargs):
+def squads_get():
     squad_dict = {"squads": []}
     try:
         squad_dict["squads"] = squad_table.get_all_squads()
@@ -108,6 +115,8 @@ def squad_delete(entity):
 
 
 def squad_post(body: dict):
+    name = ""
+    lst_body = ""
     for k, v in body.items():
         name = k
         lst_body = v
@@ -120,6 +129,16 @@ def squad_post(body: dict):
 
 
 def tournament(body: dict):
+    """Calculates who will win in competition of 2 squads
+       Each hero has a power and alive row
+       alive  - alive, dead, injured
+       So power of hero will be calculated as : power * alive
+       so dead hero - has no power
+       and injured hero has half of power
+       params: body - dictionary from body-json of POST
+       expected body : {'squad1': 'group1', 'squad2': 'group1''}"
+    """
+
     answer = prepare_answer("Bad format, expected {'squad1': 'group', "
                             "'squad2': 'group''}", 422, False)
     if 'squad1' in body:
@@ -133,16 +152,17 @@ def tournament(body: dict):
         return answer
 
     if not squad_table.is_valid_squad(group_name1):
-        return prepare_answer(f"Not Found {group_name1}"  , 404, False)
+        return prepare_answer(f"Not Found {group_name1}", 404, False)
 
     if not squad_table.is_valid_squad(group_name2):
-        return prepare_answer(f"Not Found {group_name2}"  , 404, False)
+        return prepare_answer(f"Not Found {group_name2}", 404, False)
 
-    result = calculate_power(heroes_table.heroes, squad_table.squads, group_name1,
-                             group_name2)
-    return prepare_answer(f"{result}"  , 200, True)
+    result = calculate_power(heroes_table.heroes, squad_table.squads,
+                             group_name1, group_name2)
+    return prepare_answer(f"{result}", 200, True)
 
 
+# Developer adds here mapping : method ,  url ,  function
 urlmapping = {
     'get': (('/heroes', heroes_get), ('/squads', squads_get),
             ('/heroes/{entity}', hero_get),
@@ -150,7 +170,8 @@ urlmapping = {
     'delete': (('/heroes/{entity}', heroes_delete),
                ('/squads/{entity}', squad_delete)),
     'patch': (('/heroes/{entity}', heroes_patch),),
-    'post': (('/heroes', heroes_post), ('/tournament', tournament), ('/squads', squad_post))
+    'post': (('/heroes', heroes_post), ('/tournament', tournament),
+             ('/squads', squad_post))
 }
 
 
@@ -179,8 +200,6 @@ class MethodsCallDispatcher:
 
         pattern_with_entity = re.compile("^(/.+)/(.+)")
         pattern_endpoint = re.compile("^(/.+)$")
-        pattern_with3section = re.compile("^(/.+)/(.+)/(.+)")
-        # NOTE - it is on GET
 
         if pattern_with_entity.search(url_path.path) is not None:
             path_entity = pattern_with_entity.findall(url_path.path)[0]
@@ -226,7 +245,7 @@ class MethodsCallDispatcher:
         answer = True
         try:
             json.loads(body)
-        except:
+        except TypeError:
             answer = False
         finally:
             return answer
@@ -262,7 +281,7 @@ class MethodsCallDispatcher:
             else:
                 answer = prepare_answer(f"Not Found, endpoint: {url_path.path}",
                                         404, False)
-
+                return answer
         return prepare_answer(f"Bad Request: {url_path.path}", 400, False)
 
     def on_delete(self, url_path):
@@ -320,6 +339,7 @@ class MethodsCallDispatcher:
             else:
                 answer = prepare_answer(f"Not Found, endpoint: {url_path.path}",
                                         404, False)
+                return answer
 
         return prepare_answer(f"Bad Request: {url_path.path}", 400, False)
 

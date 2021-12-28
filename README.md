@@ -6,13 +6,16 @@ To run service - you can run
 python3 main.py
 
 
-Allows to store information about heroes and about groups
+Allows store information about heroes and about groups
 Allows compare power of squads of heroes
 Allows create, delete , modify - hero
 Allows create, delete , modify - squad
 
 
 See, which commands you may use to play with service:
+Note: Tested with curl on Linux and MacOs ,
+on Windows commands POST  - may not work as describes
+(make sure you know how to adopt commands to run curl at cmd )
 
 # Get list of heroes:
 
