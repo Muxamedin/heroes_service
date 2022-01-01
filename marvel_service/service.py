@@ -32,16 +32,7 @@ class MethodHandler(BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'application/json; charset = utf-8')
         self.end_headers()
 
-    def do_GET(self):
-        """Method GET"""
-
-        parsed_path = parse.urlparse(self.path)
-        # /endpoint/entity/?:params
-        # /hero/loky
-        # TODO issue with sending header
-        answer = self.controller.on_get(parsed_path)
-
-        # Make Answer
+    def _prepare_response(self, answer: dict) -> None:
         self._set_headers()
         self.send_response(answer['error_code'])
         if answer['status']:
@@ -51,6 +42,19 @@ class MethodHandler(BaseHTTPRequestHandler):
 
         self.end_headers()
         self.wfile.write(answer['message'].encode('utf-8'))
+
+
+    def do_GET(self):
+        """Method GET"""
+
+        parsed_path = parse.urlparse(self.path)
+        # /endpoint/entity
+        # /hero/loky
+        # TODO issue with sending header
+        answer = self.controller.on_get(parsed_path)
+
+        # Make Answer
+        self._prepare_response(answer)
 
     def do_DELETE(self):
         """Method DELETE"""
@@ -61,55 +65,41 @@ class MethodHandler(BaseHTTPRequestHandler):
         answer = self.controller.on_delete(parsed_path)
 
         # Make Answer
-        self._set_headers()
-        self.send_response(answer['error_code'])
-        if answer['status']:
-            self.send_header('Content-Type', 'application/json; charset=utf-8')
-        else:
-            self.send_header('Content-Type', 'plain/text; charset=utf-8')
-
-        self.end_headers()
-        self.wfile.write(answer['message'].encode('utf-8'))
+        self._prepare_response(answer)
 
     def do_PATCH(self):
         """Method UPDATE"""
 
         parsed_path = parse.urlparse(self.path)
-        # /endpoint/entity
-        # /hero/loky
-        patch_body = self.rfile.read(int(self.headers['Content-Length']))
-        answer = self.controller.on_patch(parsed_path, patch_body)
+
+        if self.headers['Content-Length'] is not None:
+            patch_body = self.rfile.read(int(self.headers['Content-Length']))
+            answer = self.controller.on_patch(parsed_path, patch_body)
+        else:
+            answer = {'status': False,
+                      'error_code': 412,
+                      'message': "There is no body"
+             }
 
         # Make Answer
-        self._set_headers()
-        self.send_response(answer['error_code'])
-        if answer['status']:
-            self.send_header('Content-Type', 'application/json; charset=utf-8')
-        else:
-            self.send_header('Content-Type', 'plain/text; charset=utf-8')
-
-        self.end_headers()
-        self.wfile.write(answer['message'].encode('utf-8'))
+        self._prepare_response(answer)
 
     def do_POST(self):
         """Method POST"""
 
         parsed_path = parse.urlparse(self.path)
         # get body
-        post_body = self.rfile.read(int(self.headers['Content-Length']))
-
-        answer = self.controller.on_post(parsed_path, post_body)
+        if self.headers['Content-Length'] is not None:
+            post_body = self.rfile.read(int(self.headers['Content-Length']))
+            answer = self.controller.on_post(parsed_path, post_body)
+        else:
+            answer = {'status': False,
+                      'error_code': 412,
+                      'message': "There is no body"
+                     }
 
         # Make Answer
-        self._set_headers()
-        self.send_response(answer['error_code'])
-        if answer['status']:
-            self.send_header('Content-Type', 'application/json; charset=utf-8')
-        else:
-            self.send_header('Content-Type', 'plain/text; charset=utf-8')
-
-        self.end_headers()
-        self.wfile.write(answer['message'].encode('utf-8'))
+        self._prepare_response(answer)
 
 
 def run_service(port: int = 8080):

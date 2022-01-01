@@ -84,7 +84,7 @@ squads = {'spider_man_team': ['spider_man',
                    'donatello',
                    'raphael',
                    'michelangelo'],
-          'foot clan': ['shredder',
+          'foot_clan': ['shredder',
                         'krang',
                         'baxter_stockman',
                         'karai'],
@@ -114,7 +114,8 @@ class HeroesTableHandler:
 
         return status
 
-    def validate_hero_params(self, params):
+    @staticmethod
+    def validate_hero_params(params):
         if len(params) != 3:
             return False
 

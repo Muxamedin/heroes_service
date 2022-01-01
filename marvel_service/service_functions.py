@@ -27,7 +27,7 @@ squad_table = SuperHeroSquads(squads)
 
 
 def heroes_get():
-    heroes_dict = {"heroes": []}
+    heroes_dict = {}
     try:
         heroes_dict["heroes"] = heroes_table.get_all_heroes()
     finally:
@@ -38,15 +38,29 @@ def hero_get(name):
     """Get info about hero"""
     hero_info = {}
 
+    def convert_values(hero_name, values: list) -> dict:
+        hero_dict = {"hero_name": hero_name,
+                     "good": values[0],
+                     "power": values[1],
+                     }
+        status = "dead"
+        if values[2] == 1:
+            status = "alive"
+        elif values[2] == 0.5:
+            status = "injured"
+
+        hero_dict["status"] = status
+        return hero_dict
+
     try:
         result_lst = heroes_table.get_hero_info(name)
 
         if len(result_lst) == 0:
-            hero_info = ""
+            hero_info = {}
         else:
-            hero_info[name] = result_lst
+            hero_info = convert_values(name, result_lst)
     finally:
-        return json.dumps(hero_info)
+        return hero_info
 
 
 def heroes_delete(entity):
@@ -91,16 +105,23 @@ def squad_get(name):
     """Info squad"""
     squad_info = {}
 
+    def prepare_squad(squad_name, values: list):
+
+        squad_strct = {
+            "squad_name": squad_name,
+            "heroes":  values
+        }
+        return squad_strct
+
+    squad_info = {}
+    result_lst = squad_table.get_squad_info(name)
+    squad_info = prepare_squad(name, result_lst)
     try:
         result_lst = squad_table.get_squad_info(name)
-
-        if len(result_lst) == 0:
-            squad_info = ""
-        else:
-            squad_info[name] = result_lst
+        squad_info = prepare_squad(name, result_lst)
     finally:
-        return json.dumps(squad_info)
-
+        return squad_info
+    return squad_info
 
 def squads_get():
     squad_dict = {"squads": []}
@@ -159,7 +180,9 @@ def tournament(body: dict):
 
     result = calculate_power(heroes_table.heroes, squad_table.squads,
                              group_name1, group_name2)
-    return prepare_answer(f"{result}", 200, True)
+
+    result = {"winner": result}
+    return prepare_answer(json.dumps(result), 200, True)
 
 
 # Developer adds here mapping : method ,  url ,  function
@@ -210,15 +233,12 @@ class MethodsCallDispatcher:
                 function = \
                     self.route.bound_get_and_func(f"{end_point}/" + "{entity}")
 
-                # executing of function bounded to the end-point, function
-                # should return json
+                ready_data: dict = function(entity)
 
-                json_result = function(entity)
-
-                if json_result == '""':
-                    answer = prepare_answer(f"Not Found {end_point}/{entity}",
-                                            404, False)
+                if len(ready_data) == 0:
+                    answer = prepare_answer(f"Not found {entity}", 404, False)
                 else:
+                    json_result = json.dumps(ready_data)
                     answer = prepare_answer(json_result, 200, True)
 
                 return answer
@@ -241,7 +261,7 @@ class MethodsCallDispatcher:
 
         return answer
 
-    def _is_validate_post_json(self, body):
+    def _is_valid_post_json(self, body):
         answer = True
         try:
             json.loads(body)
@@ -252,7 +272,7 @@ class MethodsCallDispatcher:
 
     def on_post(self, url_path, body):
 
-        if not self._is_validate_post_json(body):
+        if not self._is_valid_post_json(body):
             return prepare_answer("Check POST body", 422, False)
 
         body_dict = json.loads(body)
@@ -260,7 +280,9 @@ class MethodsCallDispatcher:
         pattern_end_point = re.compile("^(/.+)")
 
         if pattern_end_point.search(url_path.path) is not None:
+
             if self.route.endpoint_exists(url_path.path):
+
                 # extract function which bounded to current end_point
                 function = \
                     self.route.bound_post_and_func(url_path.path)
@@ -312,7 +334,7 @@ class MethodsCallDispatcher:
 
     def on_patch(self, url_path, body):
 
-        if not self._is_validate_post_json(body):
+        if not self._is_valid_post_json(body):
             return prepare_answer("Check PATCH body", 422, False)
 
         body_dict = json.loads(body)

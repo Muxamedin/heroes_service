@@ -58,11 +58,18 @@ application/json" -X POST http://localhost:8080/heroes`
 ### will be deleted from groups as well
 `curl  -X DELETE  http://localhost:8080/heroes/nova`
 
-### Create squad
+## Squads
+### Get info about squad
 `curl  -X GET  http://localhost:8080/squads/spider_man_team`
 
-## Delete squad
-`curl  -X DELETE  http://localhost:8080/squads/fantastic_four`
+### Create squad
+`curl -d '{"new_team":["venom", "carnage" ,"toxin" ]}' -H "Content-Type:
+application/json" -X POST  http://localhost:8080/squads`
+
+### Delete squad
+`curl  -X DELETE  http://localhost:8080/squads/new_team`
+
+### Create Squad
 
 
 ## Tournament
@@ -72,4 +79,5 @@ application/json" -X POST http://localhost:8080/heroes`
  "squad2": "<name_of_team>"
 }
 
- `curl -d '{"squad1":"spider_man_team", "squad2":"tmnt"}' -H "Content-Type: application/json" -X POST  http://localhost:8080/tournament`
+ `curl -d '{"squad1":"spider_man_team", "squad2":"tmnt"}' -H "Content-Type:
+ application/json" -X POST  http://localhost:8080/tournament:q`
