@@ -80,4 +80,4 @@ application/json" -X POST  http://localhost:8080/squads`
 }
 
  `curl -d '{"squad1":"spider_man_team", "squad2":"tmnt"}' -H "Content-Type:
- application/json" -X POST  http://localhost:8080/tournament:q`
+ application/json" -X POST  http://localhost:8080/tournament`
