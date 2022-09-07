@@ -1,5 +1,11 @@
-# Marvel heroes in squads
+# Squads of Marvel heroes
 Something similar to the REST API service
+Idea is:
+Create a Server using only built-in library. The server can store information about heroes.
+We can use any heroes we know but decided to use heroes of Marvel. 
+Hero has information about his state. 
+The server can have such objects as squads of heroes and manipulate those data.
+The server should respond to requests which can be sent as REST API requests.
 
 To run service - you can execute `main.py`
 
